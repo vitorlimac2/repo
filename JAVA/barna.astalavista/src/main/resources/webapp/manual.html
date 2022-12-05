@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<head>
+	<title>Manual | Alternative Splicing Transcriptome Annotation with FUNctional Knowledge</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://www.w3schools.com/w3css/3/w3.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="style/style.css">
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="w3-bar w3-center w3-black">
+	<a href="afunk.html" class="w3-button w3-bar-item">Home</a>
+	<a href="manual.html" class="w3-button w3-bar-item">Manual</a>
+	<a href="faq.html" class="w3-button w3-bar-item">FAQs</a>
+	<a href="contact.html" class="w3-button w3-bar-item">Contact us</a>
+</nav>
+
+<!-- Description -->
+<section class="w3-container w3-content" style="max-width:1000px">
+	<h2 class="w3-wide w3-center"><b>Manual</b></h2>
+</section>
+
+
+
+<section class="w3-container w3-content">
+	<div id="toc_container">
+		<p class="toc_title">Contents</p>
+		<ul class="toc_list">
+			<li><a href="#Intro">1 Introduction</a></li>
+			<li><a href="#Required">2 Required Fields</a>
+				<ul>
+					<li><a href="#genome">2.1 Genome</a></li>
+					<li><a href="#transcriptome">2.2 Transcriptome</a></li>
+					<li><a href="#protein_domains">2.3 Protein domains</a></li>
+				</ul>
+			</li>
+			<li><a href="#Optional">3 Optional Fields</a></li>
+			<li><a href="#Third_Point_Header">4 Output</a></li>
+		</ul>
+	</div>
+
+	<h2>Introduction</h2>
+	<p class="w3-justify">
+		Astafunk Web searches Pfam protein domains on alternatively spliced regions of the alternative transcripts. It
+		applies a series of heuristics to avoid redundant scans on AS-enriched transcriptomes. It reports all
+		predictions of different domains (even they are overlapping in
+		genomic coordinates) of each variant of an AS gene.
+	</p>
+<!--	<h3>Domain hits</h3>
+	<p class="w3-justify"></p>
+	-->
+	<h2 id="req_fields">Required Fields</h2>
+	<h3 id="genome">Genome</h3>
+	<p class="w3-justify">You must choose a target genome from a list of available assemblies. Optionally, you can
+		upload a genome assembly as a FASTA file compressed in a zipped file.
+		There are several alternatives for downloading genome assembly data: <a href="http://hgdownload.soe.ucsc.edu/downloads.html">UCSC Genome Browser</a>,
+		<a href="ftp://ftp.ncbi.nlm.nih.gov/genomes/">NCBI Genome FTP</a>,
+		<a href="https://www.vectorbase.org/downloads">VectorBase</a>,
+		<a href="http://tritrypdb.org/common/downloads/">TriTryDB</a> and others.<br>
+</p>
+
+
+	<h3>Transcriptome</h3>
+	<p class="w3-justify">You must select a transcriptome compatible with the selected assembly.
+		Optionally, you can upload a gene annotation based on <a href="https://genome.ucsc.edu/FAQ/FAQformat.html#format4">GTF (Gene Transfer Format) format file</a>.
+		If you only have a <a href="http://www.ensembl.org/info/website/upload/gff.html">GFF annotation file</a>, convert to GTF using gffread of <a href="http://cole-trapnell-lab.github.io/cufflinks/file_formats/#the-gffread-utility">Cufflinks</a> or other script.
+
+	</p>
+	<p class="w3-text-red"><b>Important:</b></p>
+	Assume your annotation GTF file is (some fields are hidden after coordinates):
+	<p class="w3-code">
+		chr1 hg19_refGene start_codon  67000042    67000044 …; <br>
+		chr2 hg19_refGene start_codon  201173796   201173798  …;<br>
+		chr3 hg19_refGene exon         134204575   134204894 …;<br>
+		chr4 hg19_refGene start_codon  41937502    41937504 …;<br>
+		chr5 hg19_refGene start_codon  134210118   134210120 …;<br>
+	</p>
+	So, the FASTA sequence names in the genome assembly file must be the same, i.e. chr1, chr2, etc.
+
+	<h3>Protein Domains</h3>
+	<p class="w3-justify">Protein domains of Pfam database are searched against the amino acid sequences only in the
+		regions of alternative splicing events. You can choose a Pfam database or upload unique profile HMM or
+		multiples HMMs in the same file (with extension .hmm) of the Pfam-A database from Pfam.
+		You can download the complete Pfam-A database from FTP site:
+		ftp://ftp.ebi.ac.uk/pub/databases/Pfam/current_release/Pfam-A.hmm.gz or download individual profiles
+		using the family browser: http://pfam.xfam.org/family/browse.</p>
+
+	<h2>Optional Fields</h2>
+	<h3>Gene/Transcript and Domain List</h3>
+	<p class="w3-justify">You can provide a list of target gene/transcript or domains (profile HMMs) identifiers instead of
+	analyse the whole transcriptome or Pfam database. Off course, the target gene/transcript ids must be
+		compatible with the genome assembly and transcriptome versions.</p><br>
+	Example of gene/transcript list:
+	<p class="w3-code">
+		ENSG00000163734<br>
+		ENST00000296026<br>
+	</p>
+	Example of Pfam domain list, i. e., a list of Pfam accession numbers:
+	<p class="w3-code">
+		PF00026<br>
+		PF00001<br>
+		PF02011<br>
+	</p>
+	<h2>Output</h2>
+	<p class="w3-justify">
+		AstaFunk reports the predictions of alternatively spliced domains for each variant. See below each output attribute:
+	<ol class="w3-justify">
+		<li><b>Chr</b>: Field "seqname" of the GTF annotation; name of the chromosome or scaffold; Example: “chr1”.</li>
+		<li><b>Gene cluster</b>: string of concatenated AS transcript/gene identifiers in the same locus. Example: “uc001dhm.2,uc001dhn.3,uc001dho.3”.</li>
+		<li><b>ACC</b>: Accession number of the profile HMM. Example: “PF00406.19”.</li>
+		<li><b>Bitscore</b>: Bit score of the alignment.</li>
+		<li><b>Start position in sequence coordinantes</b>: Start position of the alignment in the sequence.</li>
+		<li><b>End position in sequence coordinates</b>b>: End position of the alignment in the sequence.</li>
+		<li><b>Start position in genomic coordinates</b>: Start position of the alignment in the genome.</li>
+		<li><b>End position in genomic coordinates</b>: End position of the alignment in the genome.</li>
+		<li><b>First merged event source</b>: Source is the start genomic position of the fused AS events.</li>
+		<li><b>Last merged event sink</b>: Sink is the end genomic position of the fused AS events.</li>
+		<li><b>Start position in the model</b>: Alignment start state of the profile HMM.</li>
+		<li><b>End position in the model</b>: alignment end state of the profile HMM.</li>
+		<li><b>Length model</b>: number of states of the profile HMM.</li>
+		<li><b>Event code</b>: code of events overlapped by the domain prediction. The pipes "|" separate the codes of multiple events.</li>
+		<li><b>Splice chain</b>: splice chain of events overlapped by the domain prediction. The pipes "|" separate the splice chains of multiple events.</li>
+		<li><b>Variant list</b>: variant list of events overlapped by the domain prediction. Different variants of the same event are enclosed by brackets, e.g., [tx1][tx2, tx3] are two variant of a event e where the 1st variant is represented by tx1 and the 2nd variant is represented by tx2 and tx3. The pipes "|" separate the variant list of multiple events.</li>
+	</ol>
+
+
+	</p>
+</section><br>
+
+
+<!-- Footer -->
+<footer class="w3-container w3-padding-64 w3-center w3-black w3-xlarge">
+	<a href="https://www.facebook.com/bitfun.lab/"><i class="fa fa-facebook-official"></i></a>
+	<a href="https://www.bitfun.org"><i class="fa fa-globe"></i></a>
+	<p class="w3-medium">
+		Powered by <a href="http://www.bitfun.org" target="_blank">Bitfun.org</a>
+	</p>
+</footer>
+<!-- Navegation - THIS LINE MUST BE ADDED TO EVERY PAGE
+<script src="js/ddmenu.js" type="text/javascript"></script> -->
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<head>
+	<title>FAQs | Alternative Splicing Transcriptome Annotation with FUNctional Knowledge</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://www.w3schools.com/w3css/3/w3.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="style/style.css">
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="w3-bar w3-center w3-black">
+	<a href="afunk.html" class="w3-button w3-bar-item">Home</a>
+	<a href="manual.html" class="w3-button w3-bar-item">Manual</a>
+	<a href="faq.html" class="w3-button w3-bar-item">FAQs</a>
+	<a href="contact.html" class="w3-button w3-bar-item">Contact us</a>
+</nav>
+
+<!-- Description -->
+<section class="w3-container w3-content" style="max-width:1000px">
+	<h2 class="w3-wide w3-center"><b>Frequently Asked Questions</b></h2>
+</section>
+
+
+
+<!-- Description -->
+<section class="w3-container w3-content" style="max-width:1000px">
+	<div id="toc_container">
+		<p class="toc_title">Questions:</p>
+		<ul class="toc_list">
+			<li><a href="#q1">- Where do I get a genome assembly?</a></li>
+			<li><a href="#q2">- Where do I get a transcriptome annotation?</a></li>
+			<li><a href="#q3">- I am working with a non-model organism and I have only a transcriptome based on GFF format, how do I convert it to GTF?</a></li>
+			<li><a href="#q4">- What is the Pfam protein domain database?</a></li>
+			<li><a href="#q5">- What is a profile-HMM?</a></li>
+			<li><a href="#q6">- What is the difference between Pfam-A and Pfam-B?</a></li>
+			<li><a href="#q7">- Where do I get the Pfam HMM database?</a></li>
+			<li><a href="#q8">- How do I get a specific Pfam profile-HMM?</a></li>
+		</ul>
+	</div>
+
+	<h5 id="q1" class="w3-opacity w3-example w3-justify">Where do I get a genome assembly?</h5>
+	There are several alternatives for downloading genome assembly data, for example,
+	<a href="http://hgdownload.soe.ucsc.edu/downloads.html">UCSC Genome Browser</a> and
+	<a href="ftp://ftp.ncbi.nlm.nih.gov/genomes/">NCBI Genome FTP</a>. For non-model organisms, you should search
+	the data download page of the main repository of the species of your interest, for example,
+		<a href="https://www.vectorbase.org/downloads">VectorBase</a>, <a href="http://tritrypdb.org/common/downloads/">TriTryDB</a> and others.
+	<h5 id="q2" class="w3-opacity w3-example w3-justify">Where do I get a transcriptome annotation?</h5>
+	Usually, transcriptome annotation is available in the same repository of the genome assembly. <b>It is important
+	to use compatible versions of assembly and annotation</b>.
+	<br><br>
+	In the UCSC Genome Browser, you can use the
+	<a href="http://genome.ucsc.edu/cgi-bin/hgTables">Table Browser</a> to download the transcriptome
+	annotation based on <a href="https://genome.ucsc.edu/FAQ/FAQformat.html#format4">GTF (Gene Transfer Format) format</a>.
+	In this case, you must choose a <b>assembly</b> (e.g, hg19), <b>group</b> "Genes and Genes Predictions"
+	and an annotation or <b>track</b> (e.g., GENCODE v19). The field <b>output format</b> convert the output to GTF selecting
+	"GTF - gene transfer format".
+	<br><br>
+	In the <a href="https://www.ncbi.nlm.nih.gov/genome/">NCBI Genome Browser</a>, you can insert
+	the species name in the search box and click "Search" to obtain information about the available genome assembly and annotation.
+
+	<h5 id="q3" class="w3-opacity w3-example w3-justify">I am working with a non-model organism and I have only
+		a transcriptome based on <a href="https://www.ensembl.org/info/website/upload/gff.html">GFF format</a>, how do I
+		convert it to GTF?</h5>
+	If you only have a transcriptome annotation based on GFF format, convert it to GTF using gffread of Cufflinks
+	or other script. Look other solutions in this Biostar thread: <a href="https://www.biostars.org/p/45791/">
+	https://www.biostars.org/p/45791/</a>.
+
+	<h5 id="q4" class="w3-opacity w3-example w3-justify">What is the Pfam protein domain database?</h5>
+
+	According to <a href="http://pfam.xfam.org/help">Pfam</a>:<br>
+
+	<p class="w3-justify"><i>"Pfam is a collection of multiple sequence alignments and profile hidden
+		Markov models (HMMs). Each Pfam HMM represents a protein family or domain. By searching a
+		protein sequence against the Pfam library of HMMs, you can determine which domains it carries
+		i.e. its domain architecture. Pfam can also be used to analyse proteomes and questions of more
+		complex domain architectures."</i></p>
+
+	<h5 id="q5" class="w3-opacity w3-example w3-justify">What is a profile-HMM?</h5>
+
+	<a href="https://www.ncbi.nlm.nih.gov/pubmed/9918945">Eddy SR (1998)</a> says: <br>
+	<i>"Profile HMMs turn a multiple sequence alignment into a position-specific scoring
+	system suitable for searching databases for remotely homologous sequences.
+	Profile HMM analyses complement standard pairwise comparison methods for
+		large-scale sequence analysis."</i>
+
+	<h5 id="q6" class="w3-opacity w3-example w3-justify">What is the difference between Pfam-A and Pfam-B?</h5>
+	Pfam-A is a manual curated Pfam entry which is built using a small number of representative sequences.
+	Pfam manually set a threshold value for each profile-HMM and search the models against the
+	UniProt database. All of the sequences which score above the threshold for a
+	Pfam entry are included in the entry's full alignment.
+    <br><br>
+	Pfam-B contains a large number of lower quality small families automatically generated by <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC540050/">ADDA algorithm.</a>.
+	It could be useful when no Pfam-A families were found. Pfam-B was discontinued as of release 28.0.
+
+	<h5 id="q7" class="w3-opacity w3-example w3-justify">Where do I get the Pfam HMM database?</h5>
+	You can download different versions of Pfam from <a href="ftp://ftp.ebi.ac.uk/pub/databases/Pfam/releases/">
+	ftp://ftp.ebi.ac.uk/pub/databases/Pfam/releases/</a>. File Pfam-A.hmm.gz contains the whole Pfam-A database.
+
+	<h5 id="q8" class="w3-opacity w3-example w3-justify">How do I get a specific Pfam profile-HMM?</h5>
+	Sometimes you want only to analyse a specific subset of profile HMM from Pfam. You can search
+	and download specifc Pfam profiles from <a href="http://pfam.xfam.org/family/browse">
+	http://pfam.xfam.org/family/browse</a>.
+
+
+</section><br>
+
+
+<!-- Footer -->
+<footer class="w3-container w3-padding-64 w3-center w3-black w3-xlarge">
+	<a href="https://www.facebook.com/bitfun.lab/"><i class="fa fa-facebook-official"></i></a>
+	<a href="https://www.bitfun.org"><i class="fa fa-globe"></i></a>
+	<p class="w3-medium">
+		Powered by <a href="http://www.bitfun.org" target="_blank">Bitfun.org</a>
+	</p>
+</footer>
+<!-- Navegation - THIS LINE MUST BE ADDED TO EVERY PAGE
+<script src="js/ddmenu.js" type="text/javascript"></script> -->
+</body>
+</html>

@@ -1,0 +1,141 @@
+#!/usr/bin/perl -w
+
+use strict;
+use CGI;
+use CGI::Carp qw(fatalsToBrowser);
+#use CGI qw/:push -nph/;
+#use CGI qw(:standard -nph);
+use Data::Dumper; # for debugging input to cgi
+use File::Copy;
+#use File::Temp qw/tempfile/;
+use File::Temp qw/tempdir/;
+
+my $_debug = 1;
+
+#my $APACHE_ROOT = $ENV{'APACHE_ROOT'};
+#my $HOME = "~gmaster";
+# $ENV{'HOME'};
+
+warn Dumper [<STDIN>];
+my $cgi = new CGI;
+#CGI->nph(1);
+
+my $script = "../tools/astafunk.gui/barna.gui.jar";
+my $path_to_outdir = "../jobs";
+my $outname = "index.html";
+my $urlprefix = 'http://afunk.sammeth.net/jobs/';
+#my $resultfile_lifetime = 259200; # 3 days
+my $resultfile_lifetime = 180;
+
+## setup temp dir for job
+my $outdir = tempdir( "$path_to_outdir/astafunk.XXXXXX" );
+$outdir=~/\/([^\/]+)$/ || die "internal error in outdirname!\n";
+my $tempdirname = $1;
+chmod 0755, $outdir;
+
+my $input="";
+my @INPUT="";
+# input annotation file
+my $gtffile = "$outdir/astalavista.gtf";
+# input ID list
+my $idlistfile = "$outdir/idlist.txt";
+my $idlist = "";
+# url of the annotation, idlist and results files
+my $gtffileweb="$urlprefix$tempdirname/astalavista.gtf";
+my $outnameweb="$urlprefix$tempdirname/$outname";
+my $idlistfileweb="$urlprefix$tempdirname/idlist.txt";
+
+my $datasetdir="../data";
+my $testoutfile="afunk_all_output.txt";
+
+my $cmd="";
+
+# get cgi parameters
+#my $species=     ( (defined($cgi->param('species'))    ) ? $cgi->param('species') : "" );
+
+#my $datasetfile="../data/afunk_all_output.txt";
+
+my $options="";
+my $outmess="";
+my $cheatingmode=0;
+
+###### RESPONSE #######
+
+print "Content-type: text/html\n\n";
+#print multipart_init(-boundary=>'----here we go!');
+
+#print header(-nph=>1);
+#print_header();
+#print_title("Input");
+print "outdir $outdir<br>";
+#print multipart_start(-type=>'text/html'),"outdir $outdir<br>","\n";
+print "tempdirname $tempdirname<br>";
+#print multipart_start(-type=>'text/html'),"tempdirname $tempdirname<br>","\n";
+print "AStafunk input file processing... &nbsp \n";
+#print multipart_start(-type=>'text/html'),"AStafunk input file processing... &nbsp \n","\n";
+#print multipart_end;
+
+
+## delete old files
+my $my_time = time;
+opendir(DIR,"$path_to_outdir");
+my @dir= sort(grep(/astafunk\.......$/,readdir(DIR)));
+closedir(DIR);
+foreach(@dir){
+    if ((stat("$path_to_outdir/$_"))[9] <= ($my_time - $resultfile_lifetime)) {
+        $cmd= "rm -R $path_to_outdir/$_";
+        system($cmd);
+    }
+}
+#print multipart_start(-type=>'text/plain'),"deleted old files\n",multipart_end;
+
+## EXECUTE
+#print multipart_start(-type=>'text/plain'),"computing";
+eval {
+#    $outmess = qx/$java -jar $script $outdir\/astalavista.gtf -html 2>&1/;
+#    open(TMPOUT,">/usr/local/Install/apache2/htdocs/software/as/tmp.out")||die "can't open tmpout\n";
+    my $cmd="java -jar $script $outdir/$testoutfile 2>&1";
+#    print "$cmd\n";
+#    print "<br> <small> (command line: $cmd )</small><br>";
+
+    ## dont compute results if already available
+    if (!($cheatingmode)) {
+        ($_debug) && print "command: $cmd\n <br>";
+	copy("$datasetdir/$testoutfile",$outdir) or die "Copy failed: $!";
+        $outmess = qx/$cmd/;
+    }
+};
+
+#if ($@) {die $@;}
+if ($@) {
+    print_error("<b>ERROR: astalavista returned an error message:</b> <br><br> $@ ");
+}
+
+($_debug) && print STDERR "execution done!!\n";
+if (defined $outmess && (length $outmess > 0)) {
+
+    if ($_debug) {
+        print STDERR "got a outmess!\n";
+    }
+
+##     if (!$_debug) {
+##      unlink $gtffile;
+##     }
+##     print "Content-type: image/png\n\n";
+#    die $outmess;
+
+#    print_error("<b>ERROR> astalavista retu
+}
+## else {
+##     if (!$_debug) {
+##      unlink $gtffile;
+##     }
+##     print "Content-type: text/html\n\n";
+##     print_error("<b>ERROR> The execution of the genes clustering workflow has failed!");
+## }
+
+print "<b>completed</b><br><br>\n";
+#print "<b><a href=$urlprefix$tempdirname/$outname>Here are your results</a>.<br><br>\n";
+print "<b><a href=$outnameweb>To see the corresponding alternative splicing landscape, please click here</a>.<br><br>\n";
+#print_trailer();
+#print multipart_final;

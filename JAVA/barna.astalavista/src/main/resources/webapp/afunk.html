@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Astafunk | Alternative Splicing Transcriptome Annotation with FUNctional Knowledge</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://www.w3schools.com/w3css/3/w3.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="style/style.css">
+	<script src="js/afunk.js"></script>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="w3-bar w3-center w3-black">
+	<a href="afunk.html" class="w3-button w3-bar-item">Home</a>
+	<a href="manual.html" class="w3-button w3-bar-item">Manual</a>
+	<a href="faq.html" class="w3-button w3-bar-item">FAQs</a>
+	<a href="contact.html" class="w3-button w3-bar-item">Contact us</a>
+</nav>
+
+<!-- Description -->
+<section class="w3-container w3-content" style="max-width:1000px">
+	<h2 class="w3-wide w3-center"><b>Astafunk</b></h2>
+	<h2 class="w3-wide w3-center">Alternative Splicing Transcriptome Annotation with FUNctional Knowledge</h2>
+	<p class="w3-opacity w3-justify"><i>ASTAFUNK efficiently detects protein domains that are modified by alternative
+		splicing (AS). The algorithm translates on the fly the <b>genomic nucleotide sequence</b> of alternatively spliced
+		transcript parts in open reading frames of a <b>transcriptome annotation</b> into amino acid sequences.
+		Subsequently, <b>domain profiles</b> are employed to scan the translated peptides for domain occurrences. The
+		ASTAFUNK algorithm is designed to avoid redundant sequence scans but to guarantee that protein domains extending
+		beyond AS event boundaries are detected as well.</i></p>
+</section>
+
+
+<div>
+
+	<!-- Forms -->
+	<form name="query" onsubmit="return validateForm()" method="post" action="cgi-bin/astafunk.cgi" enctype="multipart/form-data" target="_blank">
+    		<fieldset>
+			<legend><b>Required fields</b></legend>
+			<!--<fieldset>
+				<legend><b>Job Identification:</b></legend>
+				Name:
+				<input type="text" name="name" value="" required><br>
+				Email:
+				<input type="text" name="job_email" value="" required><br>
+				Job identifier:
+				<input type="text" name="job_id" value="" required><br>
+				<p class="w3-opacity w3-justify"><i>If you provide a valid email address you
+					will be notified when your results are ready.</i></p>
+			</fieldset>-->
+			<fieldset>
+				<legend><b>Genome:</b></legend>
+				Choose the genome assembly of a species:
+				<select name="genome_sel">
+					<option value="rproc1/rproc1.fa.gz">rproc1 (kissing bug)</option>
+					<!--option value="">rproc3 (kissing bug)</option-->
+					<option value="dm6/dm6.fa.gz" selected>dm6 (fruitfly)</option>
+					<option value="ce10/ce10_AMX.fa.gz">ce11 (roundworm)</option>
+					<option value="mm10/mm10_AMXY.fa.gz">mm10 (house mouse)</option>
+                                        <option value="hg38/hg38.fa.gz">hg38 (human)</option>
+				</select><br>
+				<b>or</b> upload a genome sequence from your computer (<a href="#" title=">chr1&#013;GATTACATGATTACATGATTACATGATTACAT..&#013;>chr2&#013;TAGATATAGATATAGATATAGATATAGATATA..">FASTA format</a>):
+				<input type="file" name="genome_ul" id="genome_ul">
+			</fieldset>
+			<fieldset>
+				<legend><b>Transcriptome:</b></legend>
+				Choose a transcriptome annotation <u>matching the selected genome</u>:
+				<select name="trptome_sel">
+					<option value="rproc1/rproc1.gtf.gz">rproc1/VB v1.3 (kissing bug)</option>
+					<!--option value="">rproc3/VB v3.3 (kissing bug)</option-->
+					<option value="dm6/dm6.gtf.gz" selected>dm6/Refseq (fruitfly)</option>
+					<option value="ce10/ce10_refseq_fromUCSC.gtf.gz">ce11/RefSeq (roundworm)</option>
+					<option value="mm10/mm10_refseq_fromUCSC.gtf.gz">mm10/RefSeq (house mouse)</option>
+                                        <option value="hg38/gencodeV27_comprehensive_2017-12-18.gtf.gz">hg38/Gencode v27 (human)</option>
+				</select><br>
+				<b>or</b> upload a transcriptome annotation from your computer (<a href="#" title="chr1  src  exon  123  456  .  +  .  transcript_id  &quot;name1&quot;;&#013;chr1  src  CDS  132  456  .  +  .  transcript_id  &quot;name1&quot;;&#013;chr1  src  exon  789  1011  .  +  .  transcript_id  &quot;name1&quot;;&#013;chr1  src  CDS  789  1001  .  +  .  transcript_id  &quot;name1&quot;;">GTF format</a>):
+				<input type="file" name="trptome_ul" id="trptome_ul">
+			</fieldset>
+			<fieldset>
+				<legend><b>Protein Domains:</b></legend>
+				Select a protein domain database:
+				<select name="domains_sel">
+                                        <option value="pfam/database.hmm.gz" selected>Example (Pfam-A light)</option>
+                                        <option value="pfam/pfam31_a.hmm.gz">Pfam-A v31 (Feb 2017)</option>
+                                        <option value="pfam/pfam30_a.hmm.gz">Pfam-A v30 (Sep 2016)</option>
+                                        <option value="pfam/pfam29_a.hmm.gz">Pfam-A v29 (Jun 2016)</option>
+                                        <option value="pfam/pfam28_a.hmm.gz">Pfam-A v28 (Dec 2015)</option>
+                                        <option value="pfam/pfam27_a.hmm.gz">Pfam-A v27 (May 2015)</option>
+				</select><br>
+				<b>or</b> upload domain profiles from your computer (<a href="#" title="Check documentation">Pfam format</a>):
+				<input type="file" name="domains_ul" id="domains_ul">
+			</fieldset>
+
+
+		</fieldset>
+
+		<fieldset class="textbox1">
+			<legend><b>Optional:</b></legend>
+			Paste a list of genes/transcript identifiers:<br>
+			<input type="text" name="gene_ids" value=""><br>
+			<b>OR/AND</b> a list of Pfam identifiers, i.e., accession numbers (ACC):<br>
+			<input type="text" name="domain_ids" value=""><br>
+		</fieldset>
+
+		<input class="\" type="submit" value="Submit Query" onClick="">
+		<input type="reset"  value="Reset Form" title="Reset form">
+
+	</form>
+
+</div><br>
+
+<!--
+<h3 class="w3-wide w3-center">Sample files</h3>
+
+<ul>
+<li><a href="../data/chr19.fa">Download sample genome</a></li>
+<li><a href="../data/tnnt1.gtf">Download sample transcriptome</a></li>
+<li><a href="../data/database.hmm">Download sample domain profiles</a></li>
+</ul>
+-->
+
+
+<!-- Footer -->
+<footer class="w3-container w3-padding-64 w3-center w3-black w3-xlarge">
+	<a href="https://www.facebook.com/bitfun.lab/"><i class="fa fa-facebook-official"></i></a>
+	<a href="https://www.bitfun.org"><i class="fa fa-globe"></i></a>
+	<p class="w3-medium">
+		Contributed by the <a href="http://www.bitfun.org" target="_blank">Bitfun.org</a>
+	</p>
+</footer>
+<!-- Navegation - THIS LINE MUST BE ADDED TO EVERY PAGE
+<script src="js/ddmenu.js" type="text/javascript"></script> -->
+</body>
+</html>

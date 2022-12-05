@@ -1,0 +1,54 @@
+html, body {
+    height:100%;
+    width:100%;
+    margin:0;
+    padding:0;
+}
+label {
+    font-weight:bold;
+    margin-right:10px;
+}
+.table {
+    display:table;
+    text-align:center;
+    width:100%;
+    height:100%;
+    table-layout:fixed;
+}
+.cell {
+    display:table-cell;
+    vertical-align:middle;
+}
+form {
+    margin:0 auto;
+    border:0 solid black;
+    width: 700px;
+    background: white;
+}
+    .textbox1 input[type=text] {
+        margin: 5px;
+        padding: 5px;
+        display: inline-block;
+        width: 70%;
+        height: 50%
+        text-align: left;
+        vertical-align: middle;
+        font-family: Palatino Linotype;
+    }
+    #toc_container {
+        background: #F5F5DC;
+        display: table;
+        font-size: 95%;
+        margin-bottom: 1em;
+        padding: 20px;
+        width: 60%;
+    }
+
+    .toc_title {
+        font-weight: 700;
+        text-align: left;
+    }
+
+    #toc_container li, #toc_container ul, #toc_container ul li{
+        list-style: outside none none !important;
+    }
